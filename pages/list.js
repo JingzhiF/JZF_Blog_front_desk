@@ -2,21 +2,27 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { Row, Col, List, Breadcrumb } from 'antd';
-import axios from 'axios';
 import styles from '../styles/pages/comm.module.css';
 import {
   CalendarOutlined,
   FolderOutlined,
   FireOutlined
 } from '@ant-design/icons';
+import Header from '../components/Header';
 import Author from '../components/Author';
-import { responsiveArray } from 'antd/lib/_util/responsiveObserve';
+import Footer from '../components/Footer';
 
-export default function Home({ data }) {
-  const [mylist, setMylist] = useState(data);
-
+export default function mylist() {
+  const [mylist, setMylist] = useState([
+    { title: '第一篇水文', content: '今天也是充满元气的一天！' },
+    { title: '水文', content: '今天也是充满元气的一天！' },
+    { title: '水文', content: '今天也是充满元气的一天！' },
+    { title: '水文', content: '今天也是充满元气的一天！' },
+    { title: '水文', content: '今天也是充满元气的一天！' }
+  ]);
   return (
     <div>
+      <Header />
       <Row className={styles.commMain}>
         <Col
           className={styles.commLeft}
@@ -26,32 +32,34 @@ export default function Home({ data }) {
           lg={18}
           xl={14}
         >
-          <Head>
-            <title>Home</title>
-          </Head>
+          <Head>Home</Head>
+          <Breadcrumb>
+            <Breadcrumb.Item>
+              <Link href="/">
+                <a>首页</a>
+              </Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>文章</Breadcrumb.Item>
+          </Breadcrumb>
           <List
             header={<div>最新日志</div>}
             itemLayout="vertical"
             dataSource={mylist}
             renderItem={(item) => (
               <List.Item>
-                <div className={styles.listTitle}>
-                  <Link href={{ pathname: `/posts/${item.id}` }}>
-                    <a>{item.title}</a>
-                  </Link>
-                </div>
+                <div className={styles.listTitle}>{item.title}</div>
                 <div className={styles.listIcon}>
                   <span>
                     <CalendarOutlined />
-                    {item.addTime}
+                    2022.9.5
                   </span>
                   <span>
                     <FolderOutlined />
-                    {item.typeName}
+                    关于博客这件事
                   </span>
                   <span>
                     <FireOutlined />
-                    {item.view_count}
+                    4399人
                   </span>
                 </div>
                 <div className={styles.listContent}>{item.content}</div>
@@ -63,27 +71,7 @@ export default function Home({ data }) {
           <Author />
         </Col>
       </Row>
+      <Footer />
     </div>
   );
-}
-
-export async function getStaticProps() {
-  const promise = new Promise((resolve, reject) => {
-    axios('http://127.0.0.1:7001/default/getArticleList').then((res) => {
-      res.data.data.forEach((item) => {
-        const date = new Date(item.addTime);
-        let dateStr = `${date.getFullYear()}/${date.getMonth()}/${date.getDay()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-        item.addTime = dateStr;
-      });
-      resolve(res.data.data);
-    });
-  });
-
-  const data = await promise;
-
-  return {
-    props: {
-      data: data
-    }
-  };
 }

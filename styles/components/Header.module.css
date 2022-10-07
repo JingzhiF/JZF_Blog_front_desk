@@ -1,0 +1,24 @@
+.header{
+    background-color: #fff;
+    padding: .4rem;
+    overflow: hidden;
+    height: 2.8rem;
+    border-bottom: 1px solid #ccc;
+}
+
+.headerLogo{
+    color: #1e90ff;
+    font-size:1.4rem;
+}
+
+.headerTxt{
+    font-size: .6rem;
+    color: #fff;
+    display: inline-block;
+    padding-left: 1.3rem;
+}
+/* 
+如果需要改antd的样式，
+一种比较好的方法是在使用antd前，
+修改引入的antd.css文件 
+*/
